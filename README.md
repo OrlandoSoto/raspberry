@@ -9,7 +9,7 @@ pip install pygame
 
 ### How to run
 ```
-python play_sounds
+python3 my-motion.py
 ```
 
 
