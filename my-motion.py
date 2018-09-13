@@ -9,17 +9,10 @@ from os.path import isfile, join
 import random
 import pygame
 import datetime
+import utils 
 
 threshold = 20    # How Much pixel changes
 sensitivity = 100 # How many pixels change
-
-def get_file_name(search_path):
-    onlyfiles = [f for f in listdir(search_path) if isfile(join(search_path, f))]
-    print(onlyfiles)
-
-    random_filename = random.choice(onlyfiles)
-    print(random_filename)
-    return random_filename
 
 
 def play_sound():
@@ -35,7 +28,7 @@ def play_sound():
     if not listdir(file_path):
         raise FileNotFoundError("Directory is empty")
 
-    filename = get_file_name(file_path)
+    filename = utils.get_file_name(file_path)
 
     pygame.mixer.init()
     pygame.mixer.music.load(file_path + '/' + filename)
@@ -89,7 +82,7 @@ def take_snapshot():
 def motionDetection():
     print("Scanning for Motion threshold=%i sensitivity=%i"  % (threshold, sensitivity))
     while True:
-        if scanMotion(224, 160):
+        if scanMotion(640, 480):
             print("Motion detected")
             take_snapshot()
             play_sound()
