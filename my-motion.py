@@ -8,6 +8,7 @@ from os import listdir
 from os.path import isfile, join
 import random
 import pygame
+import datetime
 
 threshold = 20    # How Much pixel changes
 sensitivity = 100 # How many pixels change
@@ -76,12 +77,23 @@ def scanMotion(width, height):
             data2 = data1
     return motionFound
 
+def take_snapshot():
+    my_date = datetime.datetime.now().strftime("%B %d %Y %-I %M %S %p")
+    print(my_date)
+    camera = picamera.PiCamera()
+    camera.rotation = 180
+    camera.annotate_text = my_date
+    camera.capture('selfie.png')
+    camera.close()
+
 def motionDetection():
     print("Scanning for Motion threshold=%i sensitivity=%i"  % (threshold, sensitivity))
     while True:
         if scanMotion(224, 160):
             print("Motion detected")
+            take_snapshot()
             play_sound()
+            
 
 if __name__ == '__main__':
     try:
