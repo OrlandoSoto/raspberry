@@ -14,30 +14,6 @@ import utils
 threshold = 20    # How Much pixel changes
 sensitivity = 100 # How many pixels change
 
-
-def play_sound():
-
-    # If a file_path was passed in then use it
-    if(sys.argv[1:]):
-        print(sys.argv[1:])
-        file_path = sys.argv[1]
-    # Otherwise use the deafult directory
-    else:
-        file_path = 'warn'
-
-    if not listdir(file_path):
-        raise FileNotFoundError("Directory is empty")
-
-    filename = utils.get_file_name(file_path)
-
-    pygame.mixer.init()
-    pygame.mixer.music.load(file_path + '/' + filename)
-
-    pygame.mixer.music.play()
-
-    # Wait for the sound to finish playing
-    while pygame.mixer.music.get_busy():
-        continue
     
 def takeMotionImage(width, height):
     with picamera.PiCamera() as camera:
@@ -85,7 +61,7 @@ def motionDetection():
         if scanMotion(640, 480):
             print("Motion detected")
             take_snapshot()
-            play_sound()
+            utils.play_sound()
             
 
 if __name__ == '__main__':
