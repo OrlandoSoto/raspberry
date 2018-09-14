@@ -8,13 +8,13 @@ from os.path import isfile, join
 import random
 import pygame
 import datetime
-import utils 
+import utils
 
-threshold = 30    # How Much pixel changes
-sensitivity = 100 # How many pixels change
+threshold = 30     # How Much pixel changes
+sensitivity = 100  # How many pixels change
 snapshots_directory = 'snapshots'
 
-    
+
 def takeMotionImage(width, height):
     with picamera.PiCamera() as camera:
         time.sleep(1)
@@ -25,21 +25,22 @@ def takeMotionImage(width, height):
             camera.capture(stream, format='rgb')
             return stream.array
 
+
 def scanMotion(width, height):
     motionFound = False
     data1 = takeMotionImage(width, height)
     while not motionFound:
         data2 = takeMotionImage(width, height)
-        diffCount = 0;
+        diffCount = 0
         for w in range(0, width):
             for h in range(0, height):
                 # get the diff of the pixel. Conversion to int
                 # is required to avoid unsigned short overflow.
                 diff = abs(int(data1[h][w][1]) - int(data2[h][w][1]))
-                if  diff > threshold:
+                if diff > threshold:
                     diffCount += 1
             if diffCount > sensitivity:
-                break;
+                break
         if diffCount > sensitivity:
             motionFound = True
         else:
@@ -47,15 +48,14 @@ def scanMotion(width, height):
     return motionFound
 
 
-
 def motionDetection():
-    print("Scanning for Motion threshold=%i sensitivity=%i"  % (threshold, sensitivity))
+    print("Scanning for Motion threshold=%i sensitivity=%i" % (threshold, sensitivity))
     while True:
         if scanMotion(640, 480):
             print("Motion detected")
             utils.take_snapshot(snapshots_directory)
             utils.play_sound()
-            
+
 
 if __name__ == '__main__':
     try:
