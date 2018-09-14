@@ -1,5 +1,4 @@
 #!/usr/bin/python
-
 import picamera
 import picamera.array
 import time
@@ -11,8 +10,9 @@ import pygame
 import datetime
 import utils 
 
-threshold = 20    # How Much pixel changes
+threshold = 30    # How Much pixel changes
 sensitivity = 100 # How many pixels change
+snapshots_directory = 'snapshots'
 
     
 def takeMotionImage(width, height):
@@ -46,21 +46,14 @@ def scanMotion(width, height):
             data2 = data1
     return motionFound
 
-def take_snapshot():
-    my_date = datetime.datetime.now().strftime("%B %d %Y %-I %M %S %p")
-    print(my_date)
-    camera = picamera.PiCamera()
-    camera.rotation = 180
-    camera.annotate_text = my_date
-    camera.capture('selfie.png')
-    camera.close()
+
 
 def motionDetection():
     print("Scanning for Motion threshold=%i sensitivity=%i"  % (threshold, sensitivity))
     while True:
         if scanMotion(640, 480):
             print("Motion detected")
-            take_snapshot()
+            utils.take_snapshot(snapshots_directory)
             utils.play_sound()
             
 
