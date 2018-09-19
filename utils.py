@@ -23,9 +23,9 @@ def play_sound():
     if(sys.argv[1:]):
         print(sys.argv[1:])
         file_path = sys.argv[1]
-    # Otherwise use the deafult directory
+    # Otherwise do not play sound
     else:
-        file_path = 'warn'
+        return
 
     if not listdir(file_path):
         raise FileNotFoundError("Directory is empty")
