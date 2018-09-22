@@ -6,6 +6,7 @@ import random
 import sys
 import pygame
 import datetime
+from gpiozero import MotionSensor
 
 
 def get_file_name(search_path):
@@ -48,7 +49,14 @@ def take_snapshot(target_dir):
     print(my_date)
     file_name = target_dir + '/' + my_timestamp + '.png'
     camera = picamera.PiCamera()
-    camera.rotation = 180
+    #camera.rotation = 180
     camera.annotate_text = my_date
     camera.capture(file_name)
     camera.close()
+
+
+def detect_motion():
+    pir = MotionSensor(4)
+    pir.wait_for_motion()
+    print("Motion Detected")
+    return True

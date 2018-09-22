@@ -10,8 +10,8 @@ import pygame
 import datetime
 import utils
 
-threshold = 30     # How Much pixel changes
-sensitivity = 100  # How many pixels change
+threshold = 64     # How Much pixel changes
+sensitivity = 3000  # How many pixels change
 snapshots_directory = 'snapshots'
 
 
@@ -48,10 +48,11 @@ def scanMotion(width, height):
     return motionFound
 
 
-def motionDetection():
+def main():
     print("Scanning for Motion threshold=%i sensitivity=%i" % (threshold, sensitivity))
     while True:
-        if scanMotion(640, 480):
+        if utils.detect_motion():
+        #if scanMotion(640, 480):
             print("Motion detected")
             utils.take_snapshot(snapshots_directory)
             utils.play_sound()
@@ -59,6 +60,6 @@ def motionDetection():
 
 if __name__ == '__main__':
     try:
-        motionDetection()
+        main()
     finally:
         print("Exiting Program")
