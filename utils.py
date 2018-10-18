@@ -44,19 +44,21 @@ def play_sound():
 
 
 def take_snapshot(target_dir):
-    my_date = datetime.datetime.now().strftime("%B %d %Y %-I %M %S %p")
-    my_timestamp = datetime.datetime.now().strftime("%B-%d-%Y-%-I-%M-%S-%p")
+    my_date = datetime.datetime.now().strftime("%B %d %Y %-H %M %S")
+    my_timestamp = datetime.datetime.now().strftime("%B-%d-%Y-%-H-%M-%S")
     print(my_date)
     file_name = target_dir + '/' + my_timestamp + '.png'
     camera = picamera.PiCamera()
-    #camera.rotation = 180
+    camera.resolution = (1024, 768)
+    print(camera.resolution)
+    camera.rotation = 180
     camera.annotate_text = my_date
     camera.capture(file_name)
     camera.close()
 
 
 def detect_motion():
-    pir = MotionSensor(4)
+    pir = MotionSensor(4,1,10,.9)
     pir.wait_for_motion()
     print("Motion Detected")
     return True
