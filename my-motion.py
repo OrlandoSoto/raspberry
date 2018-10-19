@@ -10,16 +10,17 @@ import pygame
 import datetime
 import utils
 
-snapshots_directory = 'snapshots'
+snapshots_dir = 'snapshots'
 
 def main():
     print("Scanning for Motion")
     while True:
         if utils.detect_motion():
             print("Motion detected")
-            utils.take_snapshot(snapshots_directory)
+            snapshot_file = utils.take_snapshot(snapshots_dir)
             utils.play_sound()
-            time.sleep(1)
+            utils.copy_snapshot(snapshot_file)
+            time.sleep(5)
 
 
 if __name__ == '__main__':

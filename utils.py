@@ -7,6 +7,9 @@ import sys
 import pygame
 import datetime
 from gpiozero import MotionSensor
+from paramiko import SSHClient
+from scp import SCPClient
+import os
 
 
 def get_file_name(search_path):
@@ -49,16 +52,38 @@ def take_snapshot(target_dir):
     print(my_date)
     file_name = target_dir + '/' + my_timestamp + '.png'
     camera = picamera.PiCamera()
-    camera.resolution = (1024, 768)
-    print(camera.resolution)
+    camera.resolution = (1280, 720)
     camera.rotation = 180
     camera.annotate_text = my_date
     camera.capture(file_name)
     camera.close()
+    return file_name
 
 
 def detect_motion():
-    pir = MotionSensor(4,1,10,.9)
+    pir = MotionSensor(4,2,100,.3)
     pir.wait_for_motion()
     print("Motion Detected")
     return True
+
+def copy_snapshot(file_name):
+    passwd = (os.environ.get('PW'))
+    dest_dir = '/media/orlando/XP/snapshots'
+    source_file = file_name
+
+    ssh = SSHClient()
+    ssh.load_system_host_keys()
+    try:
+        ssh.connect('orlando-ubuntu',22,'orlando',passwd, None,None,5)
+    except Exception as e:
+        print("Could not scp " + str(e) )
+        return
+    
+    scp = SCPClient(ssh.get_transport())
+    scp.put(source_file, dest_dir, False, True)
+    scp.close()
+    ssh.close()
+    os.remove(source_file)
+
+    
+
