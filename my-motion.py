@@ -7,7 +7,7 @@ snapshots_dir = 'snapshots'
 
 def main():
     print("Scanning for Motion")
-    pir = MotionSensor(4,2,100,.9)
+    pir = MotionSensor(4)
     while (True):
         if(pir.wait_for_motion()):
             print("Motion detected")
