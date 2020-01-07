@@ -37,7 +37,7 @@ def main():
 
     sub = subprocess.Popen(['/usr/bin/aplay', filename])
     print sub.pid
-
+    sys.exit()
 
     # pygame.mixer.init()
     # pygame.mixer.music.load(file_path + '/' + filename)
