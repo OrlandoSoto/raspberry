@@ -6,6 +6,7 @@ import random
 import sys
 import time
 import subprocess
+import psutil
 
 file_path = ''
 
@@ -35,18 +36,27 @@ def main():
     filename = get_file_name(file_path)
     print filename
 
-    sub = subprocess.Popen(['/usr/bin/aplay', filename])
-    print sub.pid
-    sys.exit()
+    if checkIfProcessRunning('/usr/bin/aplay'):
+        print('Yes a aplay process was running')
+        return
+    else:
+        print('No aplay process was running')
+        subprocess.Popen(['/usr/bin/aplay', filename])
+        sys.exit(0)
 
-    # pygame.mixer.init()
-    # pygame.mixer.music.load(file_path + '/' + filename)
-
-    # pygame.mixer.music.play()
-
-    # # Wait for the sound to finish playing
-    # while pygame.mixer.music.get_busy():
-    #     continue
+def checkIfProcessRunning(processName):
+    '''
+    Check if there is any running process that contains the given name processName.
+    '''
+    #Iterate over the all the running process
+    for proc in psutil.process_iter():
+        try:
+            # Check if process name contains the given name string.
+            if processName.lower() in proc.name().lower():
+                return True
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
+    return False;
 
 
 if __name__ == "__main__":
