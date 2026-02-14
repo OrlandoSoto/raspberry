@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Install dependencies
-      run: pip3 install -r requirements.txt
+      run: pip3 install picamera
     - uses: Silleellie/pylint-github-action@v2.1
       with:
         lint-path: utils.py
