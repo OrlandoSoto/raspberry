@@ -5,9 +5,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: Silleellie/pylint-github-action@v2.1
     - name: Install dependencies
       run: pip3 install -r requirements.txt
+    - uses: Silleellie/pylint-github-action@v2.1
       with:
         lint-path: utils.py
         python-version: 3.11
