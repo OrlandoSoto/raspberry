@@ -1,0 +1,16 @@
+name: autopep8 formatter
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4 # Use a recent version of the checkout action
+
+      - name: Run autopep8
+        uses: peter-evans/autopep8@v2
+        with:
+          args: --recursive --in-place --aggressive --aggressive .
+          # The above arguments recursively find all Python files and apply fixes
